@@ -13,5 +13,12 @@ module SitePrism
 
       raise SitePrism::TimeoutError, "Timed out after #{wait_time}s."
     end
+
+    def self.wait_until_displayed?(*args)
+      expected_mappings = args.last.is_a?(::Hash) ? args.pop : {}
+      seconds = !args.empty? ? args.first : Capybara.default_max_wait_time
+
+      wait_until_true(seconds) { yield expected_mappings }
+    end
   end
 end
